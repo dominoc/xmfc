@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xmfc", "xmfc.vcproj", "{427F8C8A-29C3-4813-B54D-7FCD5930632C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xsens", "xsens.vcproj", "{00535287-8113-41D5-AE6A-72AD74B89C6D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{427F8C8A-29C3-4813-B54D-7FCD5930632C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{427F8C8A-29C3-4813-B54D-7FCD5930632C}.Debug|Win32.Build.0 = Debug|Win32
+		{427F8C8A-29C3-4813-B54D-7FCD5930632C}.Release|Win32.ActiveCfg = Release|Win32
+		{427F8C8A-29C3-4813-B54D-7FCD5930632C}.Release|Win32.Build.0 = Release|Win32
+		{00535287-8113-41D5-AE6A-72AD74B89C6D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{00535287-8113-41D5-AE6A-72AD74B89C6D}.Debug|Win32.Build.0 = Debug|Win32
+		{00535287-8113-41D5-AE6A-72AD74B89C6D}.Release|Win32.ActiveCfg = Release|Win32
+		{00535287-8113-41D5-AE6A-72AD74B89C6D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
