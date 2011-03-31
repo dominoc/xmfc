@@ -282,7 +282,10 @@ void exitFunc(void) {
 	cmt3.closePort();
 
 	// get rid of keystrokes before we post our message
-	while (_kbhit()) _getch();
+
+	while (_kbhit()) {
+	  _getch();
+	}
 
 	// wait for a keypress
 	if (!g_userQuit) {
