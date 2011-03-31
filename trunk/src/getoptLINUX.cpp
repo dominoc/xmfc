@@ -7,5 +7,7 @@ int getopt(int argc, char *argv[], char *in_optstring, int* in_optind, char** ou
 
   int c = getopt(argc,argv,in_optstring);
   *out_optarg = optarg;
+
+  return c;
   
 }
