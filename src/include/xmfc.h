@@ -22,11 +22,18 @@ along with XMFC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include <stdio.h>		// Needed for printf etc
+#include <stdio.h>
+
 #ifdef _WIN32
- #include <objbase.h>	// Needed for COM functionality
- #include <conio.h>		// included for _getch and _kbhit
+ #include <objbase.h>
+ #include <conio.h>
+#else
+ #include <kbhit.h>
+ #include <curses.h>
+ #define _kbhit kbhit
+ #define _getch getch
 #endif
+
 #include <cmt3.h>
 #include <xsens_list.h>
 #include <cmtscan.h>
@@ -40,7 +47,7 @@ along with XMFC.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef WIN32
 	#include <getoptWIN.h>
 #else
-	#include <getopt.h>
+	#include <getoptLINUX.h>
 
 #endif
 

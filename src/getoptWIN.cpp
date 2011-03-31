@@ -1,3 +1,4 @@
+#ifdef _WIN32
 #include <getoptWIN.h>
 /*!
 This file is part of XMFC.
@@ -86,3 +87,4 @@ int getopt(int argc, char *argv[], char *in_optstring, int* in_optind, char** ou
 
 	return l_c;
 }
+#endif

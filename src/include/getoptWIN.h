@@ -1,5 +1,6 @@
 #ifndef _GETOPT_WIN_H
 #define _GETOPT_WIN_H
+#ifdef _WIN32
 #include <string.h>
 /*!
 This file is part of XMFC.
@@ -25,4 +26,5 @@ extern int		opterr;
 
 int getopt(int argc, char *argv[], char *in_optstring, int* in_optind, char** out_optarg);
 
+#endif //_WIN32
 #endif
