@@ -34,7 +34,7 @@ int main(int argc, char * argv[]) {
   int			l_retMain = 0;
   XsensResultValue	l_res;
   int			l_nDevices = 0;
-  Packet*			l_packet = NULL;
+  Packet*		l_packet = NULL;
   bool			l_reportRaw = false;
   bool			l_outBinary = false;
 
@@ -221,17 +221,28 @@ void init(int argc, char* argv[],XMFCDataOptions* in_opts,XMFCProcessOptions* in
 
 
 void write_header(FILE* in_fp, int in_nDev, int in_dataFlags, int in_processFlags) {
-  fprintf(in_fp,
-	  "// #NDevices\n"
-	  "// Data Flags\n"
-	  "// Process Flags\n"
-	  "// ACC[0] ACC_r[0] ROT[0] ROT_r[0] MAG[0] MAG_r[0] EUL[0] QUAT[0] ACC[1] ... ACC[NDevices-1]...\n"
-	  "%d\n"
-	  "%d\n"
-	  "%d\n",
-	  in_nDev,
-	  in_dataFlags,
-	  in_processFlags);
+  if(in_processFlags && XMFC_OUT_BINARY) {
+
+    int buff[3];
+
+    buff[0] = in_nDev;
+    buff[1] = in_dataFlags;
+    buff[2] = in_processFlags;
+    fwrite(buff,sizeof(int),3,in_fp);
+     
+  } else {
+    fprintf(in_fp,
+	    "// #NDevices\n"
+	    "// Data Flags\n"
+	    "// Process Flags\n"
+	    "// ACC[0] ACC_r[0] ROT[0] ROT_r[0] MAG[0] MAG_r[0] EUL[0] QUAT[0] ACC[1] ... ACC[NDevices-1]...\n"
+	    "%d\n"
+	    "%d\n"
+	    "%d\n",
+	    in_nDev,
+	    in_dataFlags,
+	    in_processFlags);
+  }
 }
 
 void write_4vec(FILE* in_fp, double* in_tuple, XMFCProcessOptions* in_procOpts) {
