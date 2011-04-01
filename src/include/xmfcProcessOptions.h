@@ -27,7 +27,7 @@ class XMFCProcessOptions: public IXMFCOptions {
 private:
 	std::string m_outfile;
 	std::string m_infile;
-	bool		m_writeBinary;
+	bool	    m_writeBinary;
 public:
 	XMFCProcessOptions();
 	virtual bool set_options(unsigned long in_optionMask);

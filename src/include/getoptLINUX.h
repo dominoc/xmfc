@@ -24,6 +24,6 @@ along with XMFC.  If not, see <http://www.gnu.org/licenses/>.
 #include <getopt.h>
 extern int		opterr;
 
-int getopt(int argc, char *argv[], char *in_optstring, int* in_optind, char** out_optarg);
+int getopt(int argc, char *argv[], const char *in_optstring, int* in_optind, char** out_optarg);
 
 #endif
