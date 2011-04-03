@@ -39,10 +39,11 @@ int main(int argc, char * argv[]) {
   bool			l_outBinary = false;
 
   CmtVector		l_acc, l_mag, l_rot;
-  CmtShortVector		l_accR, l_magR, l_rotR;
+  CmtShortVector	l_accR, l_magR, l_rotR;
   CmtEuler		l_eul;
-  CmtQuat			l_quat;
+  CmtQuat		l_quat;
   CmtRawData		l_raw;
+  uint64_t              l_timeStamp;
 
 
   // Set exit function
@@ -105,6 +106,12 @@ int main(int argc, char * argv[]) {
 	l_raw = l_packet->getRawData();
       }
 
+      // report the time stamp
+      if(g_dataOptions.use_tim) {
+	l_timeStamp = l_packet->getRtc(dev);
+	write_1vec(g_outputFile,&l_timeStamp,&g_processOptions);
+      }
+
       if(g_dataOptions.use_acc) {
 
 	l_acc = l_packet->getCalAcc(dev);
@@ -140,7 +147,6 @@ int main(int argc, char * argv[]) {
       if(g_dataOptions.use_eul) {
 	l_eul = l_packet->getOriEuler(dev);
 	write_3vec(g_outputFile,l_eul.m_roll, l_eul.m_pitch, l_eul.m_yaw,&g_processOptions);
-
       }
 
       if(g_dataOptions.use_qua) {
@@ -205,6 +211,11 @@ void init(int argc, char* argv[],XMFCDataOptions* in_opts,XMFCProcessOptions* in
       in_opts->use_raw = true;
       break;
 
+    case 't':
+      // report raw data
+      in_opts->use_tim = true;
+      break;
+
     case 'f':
       in_procOpts->set_infile(l_optarg);
       break;
@@ -235,13 +246,26 @@ void write_header(FILE* in_fp, int in_nDev, int in_dataFlags, int in_processFlag
 	    "// #NDevices\n"
 	    "// Data Flags\n"
 	    "// Process Flags\n"
-	    "// ACC[0] ACC_r[0] ROT[0] ROT_r[0] MAG[0] MAG_r[0] EUL[0] QUAT[0] ACC[1] ... ACC[NDevices-1]...\n"
+	    "// TIME[0] ACC[0] ACC_r[0] ROT[0] ROT_r[0] MAG[0] MAG_r[0] EUL[0] QUAT[0] TIME[1] ACC[1] ... ACC[NDevices-1]...\n"
 	    "%d\n"
 	    "%d\n"
 	    "%d\n",
 	    in_nDev,
 	    in_dataFlags,
 	    in_processFlags);
+  }
+}
+
+void write_1vec(FILE* in_fp, uint64_t* in_tuple, XMFCProcessOptions* in_procOpts) {
+  if(in_procOpts->get_binaryMode()) {
+    fwrite(in_tuple,
+	   sizeof(uint64_t),
+	   1,
+	   in_fp);
+  } else {
+    fprintf(in_fp,
+	    "%lld ",
+	    in_tuple[0]);
   }
 }
 

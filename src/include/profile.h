@@ -25,24 +25,26 @@ along with XMFC.  If not, see <http://www.gnu.org/licenses/>.
 
 // Data Options:
 // =============
+// use the time
+#define XMFC_USE_TIM XMFC_OPTION(0)
 // use accelerometer
-#define XMFC_USE_ACC XMFC_OPTION(0)
+#define XMFC_USE_ACC XMFC_OPTION(1)
 // use gyroscope
-#define XMFC_USE_GYR XMFC_OPTION(1)
+#define XMFC_USE_GYR XMFC_OPTION(2)
 // use magnetometer
-#define XMFC_USE_MAG XMFC_OPTION(2)
+#define XMFC_USE_MAG XMFC_OPTION(3)
 // output euler angles
-#define XMFC_USE_EUL XMFC_OPTION(3)
+#define XMFC_USE_EUL XMFC_OPTION(4)
 // output quaternion data
-#define XMFC_USE_QUA XMFC_OPTION(4)
+#define XMFC_USE_QUA XMFC_OPTION(5)
 // include also raw data
-#define XMFC_USE_RAW XMFC_OPTION(5)
+#define XMFC_USE_RAW XMFC_OPTION(6)
 
 // Processing Options
 // ==================
 #define XMFC_OUT_BINARY XMFC_OPTION(0)
 
-#define OPTION_STRING "abgmeqrf:o:"
+#define OPTION_STRING "abgmeqrtf:o:"
 
 
 #define FORMAT_STRING_3VEC "%.15f %.15f %.15f "
