@@ -20,17 +20,20 @@ along with XMFC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 XMFCDataOptions::XMFCDataOptions() {
-	use_acc = false;
-	use_gyr = false;
-	use_mag = false;
-
-	use_eul = false;
-	use_qua = false;
-	use_raw = false;
+  use_tim = false; // report time stamps (ms)
+  use_acc = false; // save accelerator data
+  use_gyr = false; // save gyroscope data
+  use_mag = false; // save magnetometer data
+  
+  use_eul = false; // report euler angles
+  use_qua = false; // report orientation quaternion
+  use_raw = false; // report raw data
 }
 
 
 bool XMFCDataOptions::set_options(unsigned long in_optionMask) {
+
+	use_tim = (in_optionMask & XMFC_USE_TIM) != 0;
 
 	use_acc = (in_optionMask & XMFC_USE_ACC) != 0;
 	use_gyr = (in_optionMask & XMFC_USE_GYR) != 0;
@@ -46,6 +49,8 @@ bool XMFCDataOptions::set_options(unsigned long in_optionMask) {
 
 unsigned long XMFCDataOptions::get_options() {
 	unsigned long l_ret = 0;
+
+	l_ret |= (use_acc)?XMFC_USE_TIM:0;
 
 	l_ret |= (use_acc)?XMFC_USE_ACC:0;
 	l_ret |= (use_gyr)?XMFC_USE_GYR:0;
@@ -63,6 +68,9 @@ std::string XMFCDataOptions::toString() {
 	std::stringstream ss;
 
 	ss << "\n<Options>\n";
+
+	if(use_tim) 
+		ss<< "\tuse TIME\n";
 
 	if(use_acc) 
 		ss<< "\tuse ACCELEROMETER\n";

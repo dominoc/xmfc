@@ -25,6 +25,7 @@ along with XMFC.  If not, see <http://www.gnu.org/licenses/>.
 
 struct XMFCDataOptions: public IXMFCOptions {
 	// data options:
+	bool use_tim;
 	bool use_acc;
 	bool use_mag;
 	bool use_gyr;
