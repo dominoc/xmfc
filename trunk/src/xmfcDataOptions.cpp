@@ -50,7 +50,7 @@ bool XMFCDataOptions::set_options(unsigned long in_optionMask) {
 unsigned long XMFCDataOptions::get_options() {
 	unsigned long l_ret = 0;
 
-	l_ret |= (use_acc)?XMFC_USE_TIM:0;
+	l_ret |= (use_tim)?XMFC_USE_TIM:0;
 
 	l_ret |= (use_acc)?XMFC_USE_ACC:0;
 	l_ret |= (use_gyr)?XMFC_USE_GYR:0;

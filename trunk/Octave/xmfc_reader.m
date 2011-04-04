@@ -12,31 +12,42 @@ function l_data = read_data(in_filePointer, in_NSensors, in_dataFlags, in_proces
     l_nElemsPerSensor = 0;
     
     
-    if(bitand(in_dataFlags,bitshift(1,0))) %accel
+    if(bitand(in_dataFlags,bitshift(1,1)) ~= 0) %accel
         l_nElemsPerSensor += 3;
+        disp "accel data";
     end
     
-    if(bitand(in_dataFlags,bitshift(1,1))) %gyro
+    if(bitand(in_dataFlags,bitshift(1,2)) ~= 0) %gyro
         l_nElemsPerSensor += 3;
+        disp "gyroscope data";
     end
     
-    if(bitand(in_dataFlags,bitshift(1,2))) %magno
+    if(bitand(in_dataFlags,bitshift(1,3)) ~= 0) %magno
         l_nElemsPerSensor += 3;
+        disp "magnetometer data";
     end
     
-    if(bitand(in_dataFlags,bitshift(1,5))) %raw data
+    if(bitand(in_dataFlags,bitshift(1,6)) ~= 0) %raw data
         l_nElemsPerSensor *= 2;
+        disp "raw data available";
     end
     
-    if(bitand(in_dataFlags,bitshift(1,3))) %euler
+    if(bitand(in_dataFlags,bitshift(1,0)) ~= 0) %time
+        l_nElemsPerSensor += 2; %64 bit time stamps...
+        disp "time available";
+    end
+    
+    if(bitand(in_dataFlags,bitshift(1,4)) ~= 0) %euler
         l_nElemsPerSensor += 3;
+        disp "Euler angles available";
     end
     
-    if(bitand(in_dataFlags,bitshift(1,4))) %quaternion
+    if(bitand(in_dataFlags,bitshift(1,5)) ~= 0) %quaternion
         l_nElemsPerSensor += 4;
+        disp "Quaternion data available";
     end
 
-    raw_data = fread(in_filePointer,Inf,'int32');
+    raw_data = fread(in_filePointer,Inf,'float64');
     %reshape: data,rows,columns
     raw_data = reshape(raw_data,[],(l_nElemsPerSensor* ...
                                     in_NSensors));
@@ -51,9 +62,43 @@ function l_data = read_data(in_filePointer, in_NSensors, in_dataFlags, in_proces
     l_data = squeeze(data(1,:,:));
     x = 1:size(l_data,1);
 
+    
+    % accel data
+    figure;
     plot(x,l_data(:,1),'r');
     hold on;
     plot(x,l_data(:,2),'g');
     plot(x,l_data(:,3),'b');
-    legend("x","y","z");
+    title("Accelerometer");
+    legend('x','y','z');
+    hold off;
+    
+    
+    %gyro data
+    figure;
+    plot(x,l_data(:,4),'r');
+    hold on;
+    plot(x,l_data(:,5),'g');
+    plot(x,l_data(:,6),'b');
+    title("Gyroscope");
+    legend('x','y','z');
+    hold off;
+    
+    %gyro data
+    figure;
+    plot(x,l_data(:,7),'r');
+    hold on;
+    plot(x,l_data(:,8),'g');
+    plot(x,l_data(:,9),'b');
+    title("Magnetometer");
+    legend('x','y','z');
+    hold off;
+
+    figure;
+    plot(x,l_data(:,1),'r');
+    hold on;
+    plot(x,l_data(:,4),'g');
+    plot(x,l_data(:,7),'b');
+    title("Combined - X");
+    legend('acc.x','gyr.x','magn.x');
     hold off;
