@@ -21,7 +21,7 @@ along with XMFC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#define XMFC_OPTION(X) (1<<X)
+#define XMFC_OPTION(X) (0x01<<X)
 
 // Data Options:
 // =============
