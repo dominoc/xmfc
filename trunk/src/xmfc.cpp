@@ -29,7 +29,6 @@ FILE *			g_outputFile = NULL;
 XMFCDataOptions		g_dataOptions;
 XMFCProcessOptions	g_processOptions;
 
-
 int main(int argc, char * argv[]) {
   int			l_retMain = 0;
   XsensResultValue	l_res;
@@ -44,7 +43,7 @@ int main(int argc, char * argv[]) {
   CmtQuat		l_quat;
   CmtRawData		l_raw;
   uint64_t              l_timeStamp;
-
+  uint32_t*             l_devIDs;
 
   // Set exit function
   atexit(exitFunc);
@@ -81,18 +80,29 @@ int main(int argc, char * argv[]) {
     goto end;
   }
 
+  // see how many devices were present..
   l_nDevices = cmt3.getMtCount();
+
+  // initialize the packet structure
   l_packet = new Packet((unsigned short)l_nDevices,cmt3.isXm());
 
+  // make room for the dev ids
+  l_devIDs = (uint32_t*)calloc(l_nDevices,sizeof(uint32_t));
+
+  for(int d = 0; d < l_nDevices; d++) {
+    cmt3.getMtDeviceId(d,l_devIDs[d]);    
+  }
+  
   // check if there is raw data...
   cmt3.readDataPacket(l_packet);
+
   if(g_dataOptions.use_raw && !l_packet->containsRawData()) {
     warning("[WARNING]: Data does not contain raw data!\n");
     g_dataOptions.use_raw = false;
   }
   cmt3.resetLogFileReadPos();
-
-  write_header(g_outputFile,l_nDevices,g_dataOptions.get_options(), g_processOptions.get_options());
+  
+  write_header(g_outputFile,l_nDevices,l_devIDs,g_dataOptions.get_options(), g_processOptions.get_options());
 
   l_reportRaw = g_dataOptions.use_raw;
 
@@ -160,7 +170,10 @@ int main(int argc, char * argv[]) {
     }
   }
 
+  free(l_devIDs);
+
   fclose(g_outputFile);
+
   g_outputFile = NULL;
 
  end:
@@ -231,7 +244,7 @@ void init(int argc, char* argv[],XMFCDataOptions* in_opts,XMFCProcessOptions* in
 }
 
 
-void write_header(FILE* in_fp, int in_nDev, int in_dataFlags, int in_processFlags) {
+void write_header(FILE* in_fp, int in_nDev, uint32_t* in_devID, int in_dataFlags, int in_processFlags) {
   if(in_processFlags && XMFC_OUT_BINARY) {
 
     int buff[3];
@@ -240,12 +253,14 @@ void write_header(FILE* in_fp, int in_nDev, int in_dataFlags, int in_processFlag
     buff[1] = in_dataFlags;
     buff[2] = in_processFlags;
     fwrite(buff,sizeof(int),3,in_fp);
+    fwrite(in_devID,sizeof(uint32_t),in_nDev,in_fp);
      
   } else {
     fprintf(in_fp,
 	    "// #NDevices\n"
 	    "// Data Flags\n"
 	    "// Process Flags\n"
+	    "// DeviceID[0] DeviceID[1]...\n "
 	    "// TIME[0] ACC[0] ACC_r[0] ROT[0] ROT_r[0] MAG[0] MAG_r[0] EUL[0] QUAT[0] TIME[1] ACC[1] ... ACC[NDevices-1]...\n"
 	    "%d\n"
 	    "%d\n"
@@ -253,6 +268,14 @@ void write_header(FILE* in_fp, int in_nDev, int in_dataFlags, int in_processFlag
 	    in_nDev,
 	    in_dataFlags,
 	    in_processFlags);
+
+    for(int d = 0; d < in_nDev; d++) {
+      fprintf(in_fp,
+	      "%d ",
+	      in_devID[d]);
+    }
+
+    fprintf(in_fp,"\n");
   }
 }
 
@@ -359,3 +382,5 @@ void report_tasks(XMFCDataOptions* dataOptions, XMFCProcessOptions* processOptio
 void warning(const char* in_str) {
   printf("\n%s\n",in_str);
 }
+
+
