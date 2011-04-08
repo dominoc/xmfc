@@ -44,6 +44,7 @@ int main(int argc, char * argv[]) {
   CmtRawData		l_raw;
   uint64_t              l_timeStamp;
   uint32_t*             l_devIDs;
+  int                   l_packetCnt;
 
   // Set exit function
   atexit(exitFunc);
@@ -110,6 +111,8 @@ int main(int argc, char * argv[]) {
 
     l_res = cmt3.readDataPacket(l_packet);
 
+    l_packetCnt++;
+
     for(int dev = 0; dev < l_nDevices; dev++) {
 
       if(l_reportRaw) {
@@ -169,6 +172,8 @@ int main(int argc, char * argv[]) {
       fprintf(g_outputFile,"\n");
     }
   }
+
+  printf("Processed %d packets...\n",l_packetCnt);
 
   free(l_devIDs);
 
