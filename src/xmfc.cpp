@@ -70,9 +70,17 @@ int main(int argc, char * argv[]) {
   }
 
   if(g_processOptions.get_outfile().length() > 0) {
+
     g_outputFile = fopen(g_processOptions.get_outfile().c_str(),"w");
+
   } else {
-    g_outputFile = fopen("output.ascii","w");
+
+    if(l_outBinary) {
+      g_outputFile = fopen("output.bin","w");
+    } else {
+      g_outputFile = fopen("output.ascii","w");
+    }
+
   }
 	
   if(g_outputFile == NULL) {
@@ -172,8 +180,6 @@ int main(int argc, char * argv[]) {
       fprintf(g_outputFile,"\n");
     }
   }
-
-  printf("Processed %d packets...\n",l_packetCnt);
 
   free(l_devIDs);
 
