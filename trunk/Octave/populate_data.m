@@ -5,8 +5,8 @@ function out_data = populate_data(in_flags,in_raw)
     out_data = make_structure(in_flags);
     
     if(in_flags.time)
-        out_data.time = in_raw(:,l_start:(l_start+1));
-        l_start = l_start + 2;
+        out_data.time = in_raw(:,l_start);
+        l_start = l_start + 1;
     end
     
     if(in_flags.accel) 

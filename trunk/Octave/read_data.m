@@ -35,7 +35,7 @@ function data = read_data(in_filePointer, in_NSensors, in_sensorIDs, ...
     end
     
     if(bitand(in_dataFlags,bitshift(1,0)) ~= 0) %time
-        l_nElemsPerSensor = l_nElemsPerSensor + 2; %64 bit time stamps...
+        l_nElemsPerSensor = l_nElemsPerSensor + 1; % time stamps...
         l_flags.time = true;
         disp('time available');
     end
@@ -49,14 +49,15 @@ function data = read_data(in_filePointer, in_NSensors, in_sensorIDs, ...
     if(bitand(in_dataFlags,bitshift(1,5)) ~= 0) %quaternion
         l_nElemsPerSensor = l_nElemsPerSensor + 4;
         l_flags.quat = true;
-        disp('Euler angles available');
+        disp('Quaternion data available');
     end
    
 
     raw_data = fread(in_filePointer,Inf,'float64');
 
-    raw_data = reshape(raw_data,[],(l_nElemsPerSensor* ...
-                                    in_NSensors));
+    raw_data = reshape(raw_data,(l_nElemsPerSensor*in_NSensors),[]);
+    
+    raw_data = raw_data';
 
     
     for(sensor=0:in_NSensors-1)

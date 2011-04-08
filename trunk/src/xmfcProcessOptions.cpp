@@ -68,6 +68,14 @@ bool XMFCProcessOptions::get_binaryMode() {
 }
 
 std::string XMFCProcessOptions::toString() {
+  if(m_outfile.length() == 0){
+    if(m_writeBinary) {
+      m_outfile = "output.bin";
+    } else {
+      m_outfile = "output.ascii";
+    }
+  }
+
   std::stringstream ss;
   ss << "\n<Options>\n";
   ss << "\n\tInfile: '" << m_infile << "'";
