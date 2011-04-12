@@ -53,7 +53,7 @@ along with XMFC.  If not, see <http://www.gnu.org/licenses/>.
 
 void write_header(FILE* in_fp, int in_nDev, uint32_t* in_devIDs,  int in_dataFlags = 0, int in_processFlags = 0);
 
-void write_1vec(FILE* in_fp, uint64_t* in_tuple, XMFCProcessOptions* in_procOpts);
+void write_1vec(FILE* in_fp, double* in_tuple, XMFCProcessOptions* in_procOpts);
 
 void write_4vec(FILE* in_fp, double* in_tuple, XMFCProcessOptions* in_procOpts);
 
