@@ -42,7 +42,7 @@ int main(int argc, char * argv[]) {
   CmtEuler		l_eul;
   CmtQuat		l_quat;
   CmtRawData		l_raw;
-  uint64_t              l_timeStamp;
+  double                l_timeStamp;
   uint32_t*             l_devIDs;
   int                   l_packetCnt;
 
@@ -129,7 +129,7 @@ int main(int argc, char * argv[]) {
 
       // report the time stamp
       if(g_dataOptions.use_tim) {
-	l_timeStamp = l_packet->getRtc(dev);
+	l_timeStamp = (double)l_packet->getRtc(dev);
 	write_1vec(g_outputFile,&l_timeStamp,&g_processOptions);
       }
 
@@ -290,15 +290,15 @@ void write_header(FILE* in_fp, int in_nDev, uint32_t* in_devID, int in_dataFlags
   }
 }
 
-void write_1vec(FILE* in_fp, uint64_t* in_tuple, XMFCProcessOptions* in_procOpts) {
+void write_1vec(FILE* in_fp, double* in_tuple, XMFCProcessOptions* in_procOpts) {
   if(in_procOpts->get_binaryMode()) {
     fwrite(in_tuple,
-	   sizeof(uint64_t),
+	   sizeof(double),
 	   1,
 	   in_fp);
   } else {
     fprintf(in_fp,
-	    "%lld ",
+	    "%.1f ",
 	    in_tuple[0]);
   }
 }

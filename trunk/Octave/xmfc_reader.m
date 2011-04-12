@@ -1,12 +1,12 @@
-function [l_data,l_config] = xmfc_reader(in_filename)
+function [l_data,l_config,l_flags] = xmfc_reader(in_filename)
     
-    l_fp = fopen(in_filename);
+    l_fp = fopen(in_filename,'r');
     
     l_ndp  = fread(l_fp,3,'int32');
     
     l_ids  = fread(l_fp,l_ndp(1),'int32');
     
-    l_data = read_data(l_fp,l_ndp(1),l_ids,l_ndp(2),l_ndp(3));
+    [l_data,l_flags] = read_data(l_fp,l_ndp(1),l_ids,l_ndp(2),l_ndp(3));
     
     l_config = get_config();
     
